@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0m/root/GenericService/src/main/scala/LoadMaster.scala:34:22: value Path is not a member of akka.actor.ActorRef[0m
+[0m[[0m[31merror[0m] [0m[0m        println(self.Path)[0m
+[0m[[0m[31merror[0m] [0m[0m                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
