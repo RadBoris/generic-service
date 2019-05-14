@@ -5,6 +5,8 @@ sealed trait LoadMasterAPI
 case class Start(maxPerNode: Int) extends LoadMasterAPI
 case class BurstAck(senderNodeID: Int, stats: Stats) extends LoadMasterAPI
 case class Join() extends LoadMasterAPI
+case class toMaster(m: String) extends LoadMasterAPI
+
 
 /** LoadMaster is a singleton actor that generates load for the app service tier, accepts acks from
   * the app tier for each command burst, and terminates the experiment when done.  It uses the incoming
@@ -31,16 +33,20 @@ class LoadMaster (val numNodes: Int, val servers: Seq[ActorRef], val burstSize: 
       log.info("Master starting bursts")
       maxPerNode = totalPerNode
       for (s <- servers) {
-            println("this is self")
-
-        println(s)
-        s ! Prime()
-        burst(s)
+          println("this is self")
+          println(s)
+          s ! Prime()
+          burst(s)
       }
 
     case BurstAck(senderNodeID: Int, stats: Stats) =>
+
+      println("server node id ack")
+
+      println(senderNodeID)
       serverStats(senderNodeID) += stats
       val s = serverStats(senderNodeID)
+
       if (s.messages == maxPerNode) {
         println(s"node $senderNodeID done, $s")
         nodesActive -= 1
@@ -53,6 +59,12 @@ class LoadMaster (val numNodes: Int, val servers: Seq[ActorRef], val burstSize: 
 
     case Join() =>
       listener = Some(sender)
+
+      case toMaster(m) =>
+
+        println("ack from master")
+        println(m)
+
   }
 
   def burst(server: ActorRef): Unit = {
@@ -76,4 +88,3 @@ object LoadMaster {
       Props(classOf[LoadMaster], numNodes, servers, burstSize)
    }
 }
-

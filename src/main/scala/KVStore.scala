@@ -2,8 +2,6 @@ import akka.actor.{Actor, Props}
 import scala.collection.mutable.{ HashMap, MultiMap, Set, MutableList}
 
 sealed trait KVStoreAPI
-// case class Put(key: BigInt, value: Any) extends KVStoreAPI
-// case class Get(key: BigInt) extends KVStoreAPI
 
 case class Put(key: BigInt, value: Any) extends KVStoreAPI
 case class Get(key: BigInt) extends KVStoreAPI
@@ -20,11 +18,11 @@ class KVStore extends Actor {
 
   override def receive = {
     case Put(key, cell) =>
-        println("Group add to group")
+        // println("Group add to group")
       sender ! store.put(key,cell)
     case Get(key) =>
-        println("Group key to get")
-        println(store)
+      // println("this is sender")
+      // println(sender)
       sender ! store.get(key)
   }
 }

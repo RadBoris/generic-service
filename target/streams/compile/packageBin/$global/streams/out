@@ -26,6 +26,8 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/GenericService/target/scala-2.12/classes/Command$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Get.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/GenericService/target/scala-2.12/classes/Get.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	toMaster.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/GenericService/target/scala-2.12/classes/toMaster.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Put$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/GenericService/target/scala-2.12/classes/Put$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Command.class[0m
@@ -38,6 +40,8 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/GenericService/target/scala-2.12/classes/Start.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	GenericCell.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/GenericService/target/scala-2.12/classes/GenericCell.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	toMaster$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /root/GenericService/target/scala-2.12/classes/toMaster$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Start$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /root/GenericService/target/scala-2.12/classes/Start$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Join$.class[0m

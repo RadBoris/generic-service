@@ -26,36 +26,76 @@ class GenericServer (val myNodeID: Int, val numNodes: Int, storeServers: Seq[Act
   val localWeight: Int = 70
   val log = Logging(context.system, this)
 
+    // println("cellstore")
+    // println(myNodeID)
+    // println(cellstore)
+
   var stats = new Stats
   var allocated: Int = 0
   var endpoints: Option[Seq[ActorRef]] = None
-  //var my_list1 =  ListBuffer[BigInt]()
-  var my_list1 = new ListBuffer[BigInt]()
-  // val my_list2 =  List[BigInt]()
-  // val my_list3 =  List[BigInt]()
-  // val my_list4 =  List[BigInt]()
+  var my_list = new ListBuffer[ActorRef]()
+  var my_list2 = new ListBuffer[ActorRef]()
+  var my_list3 = new ListBuffer[ActorRef]()
+
+
 
   def receive() = {
       case Prime() =>
-        allocCell(my_list1)
+        allocCell
       case Command() =>
         statistics(sender)
+        messageAck(sender)
         command
       case View(e) =>
         endpoints = Some(e)
+
+        val check = generator.nextInt(100)
+        var f = e.head
+
+        println("this is f " + f)
+        println("this is check " + check)
+
+        if (check > 0 && check < 30) {
+          if (!my_list.contains(f)) {
+              my_list+=f
+              println("added" + f + "to list")
+          }
+        }
+
+        if (check > 31 ) {
+            println("this is in second f condition")
+
+           if (!my_list2.contains(f)) {
+                  my_list2+=f
+                  println("added" + f + "to list 2")
+           }
+        }
+
+        // my_list.foreach { l =>
+        //   l ! "added"
+        //   println("sent message to list")
+        // }
+
+        // my_list2.foreach { l =>
+        //   l ! "added"
+        //   println("sent message to list 2")
+        // }
+
+
+        println("this is list 1")
+        println(my_list)
+        println(my_list.length)
+
+        println("this is list 2")
+        println(my_list2)
+        println(my_list2.length)
   }
 
   private def command() = {
     val sample = generator.nextInt(100)
     if (sample > 0 && sample < 20) {
-      allocCell(my_list1)
-    }
-    // else if (sample > 20 && sample < 40){
-    //   allocCell(my_list2)
-    // } else if (sample > 40 && sample < 80){
-    //   allocCell(my_list3)
-    // }
-    else {
+      allocCell
+    } else {
       touchCell
     }
   }
@@ -68,14 +108,26 @@ class GenericServer (val myNodeID: Int, val numNodes: Int, storeServers: Seq[Act
     }
   }
 
-  private def allocCell(my_list:ListBuffer[BigInt]) = {
+
+  private def messageAck(master: ActorRef) = {
+      println("in message ack")
+      println(my_list.length)
+
+      master ! toMaster("I have been added")
+
+      // my_list.foreach { l =>
+      //     l ! "added"
+      //     println("sent message to list")
+      //   }
+
+      //   my_list2.foreach { l =>
+      //     l ! "added"
+      //     println("sent message to list 2")
+      //   }
+  }
+
+  private def allocCell() = {
     val key = chooseEmptyCell
-            // println(key)
-
-    my_list+=key
-    println("list")
-        // println(my_list)
-
     var cell = directRead(key)
     assert(cell.isEmpty)
     val r = new GenericCell(0, 1)

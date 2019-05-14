@@ -5,6 +5,7 @@ import scala.language.postfixOps
 import akka.actor.ActorRef
 import akka.pattern.ask
 import akka.util.Timeout
+import akka.actor._
 
 class AnyMap extends scala.collection.mutable.HashMap[BigInt, Any]
 
@@ -37,6 +38,7 @@ class KVClient (stores: Seq[ActorRef]) {
     cache.put(key, value)
     dirtyset.put(key, value)
   }
+
 
   /** Push a dirtyset of cached writes through to the server. */
   def push(dirtyset: AnyMap) = {
