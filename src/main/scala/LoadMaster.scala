@@ -33,17 +33,11 @@ class LoadMaster (val numNodes: Int, val servers: Seq[ActorRef], val burstSize: 
       log.info("Master starting bursts")
       maxPerNode = totalPerNode
       for (s <- servers) {
-          println("this is self")
-          println(s)
           s ! Prime()
           burst(s)
       }
 
     case BurstAck(senderNodeID: Int, stats: Stats) =>
-
-      println("server node id ack")
-
-      println(senderNodeID)
       serverStats(senderNodeID) += stats
       val s = serverStats(senderNodeID)
 

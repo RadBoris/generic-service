@@ -1,4 +1,6 @@
-[0m[[0m[31merror[0m] [0m[0m/root/GenericService/src/main/scala/LoadMaster.scala:66:17: value m is not a member of Unit[0m
-[0m[[0m[31merror[0m] [0m[0m        println m[0m
-[0m[[0m[31merror[0m] [0m[0m                ^[0m
+[0m[[0m[31merror[0m] [0m[0m/root/GenericService/src/main/scala/GenericService.scala:65:26: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Seq[akka.actor.ActorRef][0m
+[0m[[0m[31merror[0m] [0m[0m required: Int[0m
+[0m[[0m[31merror[0m] [0m[0m          my_list.remove(e)[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m

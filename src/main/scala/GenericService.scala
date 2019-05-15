@@ -1,6 +1,9 @@
 import akka.actor.{Actor, ActorSystem, ActorRef, Props}
 import akka.event.Logging
 import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.HashMap
+
+import scala.util.Random
 
 class GenericCell(var prev: BigInt, var next: BigInt)
 class GenericMap extends scala.collection.mutable.HashMap[BigInt, GenericCell]
@@ -26,69 +29,60 @@ class GenericServer (val myNodeID: Int, val numNodes: Int, storeServers: Seq[Act
   val localWeight: Int = 70
   val log = Logging(context.system, this)
 
-    // println("cellstore")
-    // println(myNodeID)
-    // println(cellstore)
-
   var stats = new Stats
   var allocated: Int = 0
   var endpoints: Option[Seq[ActorRef]] = None
   var my_list = new ListBuffer[ActorRef]()
   var my_list2 = new ListBuffer[ActorRef]()
-  var my_list3 = new ListBuffer[ActorRef]()
-
-
 
   def receive() = {
       case Prime() =>
         allocCell
       case Command() =>
         statistics(sender)
-        messageAck(sender)
         command
       case View(e) =>
         endpoints = Some(e)
-
         val check = generator.nextInt(100)
-        var f = e.head
-
-        println("this is f " + f)
-        println("this is check " + check)
 
         if (check > 0 && check < 30) {
-          if (!my_list.contains(f)) {
-              my_list+=f
-              println("added" + f + "to list")
-          }
+            val f = Random.shuffle(e.toList).head
+            if (!my_list.contains(f) && !my_list2.contains(f)) {
+                my_list+=f
+            }
         }
 
-        if (check > 31 ) {
-            println("this is in second f condition")
+        if (check > 31  && check < 67) {
+          val f = Random.shuffle(e.toList).head
 
            if (!my_list2.contains(f)) {
-                  my_list2+=f
-                  println("added" + f + "to list 2")
+              my_list2+=f
            }
         }
 
-        // my_list.foreach { l =>
-        //   l ! "added"
-        //   println("sent message to list")
-        // }
+        if (check > 67) {
 
-        // my_list2.foreach { l =>
-        //   l ! "added"
-        //   println("sent message to list 2")
-        // }
+          // my_list.remove()
 
+          println("removed from list")
 
-        println("this is list 1")
-        println(my_list)
-        println(my_list.length)
+        }
 
-        println("this is list 2")
-        println(my_list2)
-        println(my_list2.length)
+        my_list.foreach { l =>
+          l ! "added"
+          println("sent message to list")
+        }
+
+        my_list2.foreach { l =>
+          l ! "added"
+          println("sent message to list 2")
+        }
+
+      case message =>
+        println("received message")
+        println("message from " + sender)
+        println(message)
+
   }
 
   private def command() = {

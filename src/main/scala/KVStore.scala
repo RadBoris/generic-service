@@ -17,12 +17,12 @@ class KVStore extends Actor {
   private val store = scala.collection.mutable.Map[BigInt, Any]()
 
   override def receive = {
+
+
     case Put(key, cell) =>
-        // println("Group add to group")
       sender ! store.put(key,cell)
+
     case Get(key) =>
-      // println("this is sender")
-      // println(sender)
       sender ! store.get(key)
   }
 }
