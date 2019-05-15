@@ -47,9 +47,13 @@ class GenericServer (val myNodeID: Int, val numNodes: Int, storeServers: Seq[Act
 
         if (check > 0 && check < 30) {
             val f = Random.shuffle(e.toList).head
-            if (!my_list.contains(f) && !my_list2.contains(f)) {
+            if (!my_list.contains(f)) {
                 my_list+=f
             }
+          my_list.foreach { l =>
+            l ! "added to group 1"
+            println("sent message to list")
+          }
         }
 
         if (check > 31  && check < 67) {
@@ -58,31 +62,28 @@ class GenericServer (val myNodeID: Int, val numNodes: Int, storeServers: Seq[Act
            if (!my_list2.contains(f)) {
               my_list2+=f
            }
+            my_list2.foreach { l =>
+                l ! "added to group 2"
+                println("sent message to list 2")
+            }
         }
 
-        if (check > 67) {
+        if (check >= 67) {
 
-          // my_list.remove()
+          if (!my_list.isEmpty) {
 
-          println("removed from list")
+              val f = Random.shuffle(my_list).head
 
-        }
+              my_list -=f
 
-        my_list.foreach { l =>
-          l ! "added"
-          println("sent message to list")
-        }
-
-        my_list2.foreach { l =>
-          l ! "added"
-          println("sent message to list 2")
+              println("removed from list" + f)
+            }
         }
 
       case message =>
         println("received message")
         println("message from " + sender)
         println(message)
-
   }
 
   private def command() = {
@@ -104,20 +105,7 @@ class GenericServer (val myNodeID: Int, val numNodes: Int, storeServers: Seq[Act
 
 
   private def messageAck(master: ActorRef) = {
-      println("in message ack")
-      println(my_list.length)
-
       master ! toMaster("I have been added")
-
-      // my_list.foreach { l =>
-      //     l ! "added"
-      //     println("sent message to list")
-      //   }
-
-      //   my_list2.foreach { l =>
-      //     l ! "added"
-      //     println("sent message to list 2")
-      //   }
   }
 
   private def allocCell() = {
